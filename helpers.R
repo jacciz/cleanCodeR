@@ -25,6 +25,6 @@ makeGoodBox <- function(code){
   makeExampleBox("Good", "⚠️", code)
 }
 
-makeBestBox <- function(code){
+makeBetterBox <- function(code){
   makeExampleBox("Better", "✅", code)
 }

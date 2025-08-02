@@ -10,8 +10,7 @@ highlight-style: github  # Syntax highlighting (changeable)
 css: styles.css
 ---
 
-One level of abstraction - no nested loops!
-negation i.e. createTableTitle()
+One level of abstraction - no nested loops! negation i.e. createTableTitle()
 
 ```{r}
 source("helpers.R")
@@ -20,14 +19,14 @@ source("helpers.R")
 ```{r, eval=FALSE, results='asis'}
 makeBadBox('head(mtcars)')
 makeGoodBox('head(mtcars)')
-makeBestBox('head(mtcars)')
+makeBetterBox('head(mtcars)')
 ```
 
 ## Intro
 
-Code is clean if it can be understood easily – by everyone on the team - and also future you! With understandability comes readability, changeability, extensibility and maintainability. Clean code comes from many iterations of failing and practice. Just like in college, your best papers probably came from many revisions. Think of refactoring your code as editing your paper - it's never perfect the first shot and takes experience to improve! I will share tips and examples I've learned mainly from Robert Martin - AKA "Uncle Bob" and apply them to R programming. Why?
+Code is clean if it can be understood easily – by everyone on the team - and also future you! Clean code makes it more maintainable and easier to debug. Clean code comes from many iterations of failing and practice. Writing clean code is never perfect the first shot and takes experience to improve! I will share tips and examples I've learned mainly from Robert Martin - AKA "Uncle Bob" and apply them to R programming.
 
-This is not a coding style guide (tidyverse). I've decided to use camelCase for all object names  for consistency. 
+This is not a coding style guide (tidyverse). I've decided to use camelCase for all object names for consistency.
 
 ------------------------------------------------------------------------
 
@@ -45,20 +44,20 @@ Change one variable name for the better, break up one function that’s a little
 
 ### Use Meaningful Names
 
-Names should reveal the intent. It should tell you why it exists, what it does, and how it is used. If a name requires a comment, then the name does not reveal its intent. Let's say we use `date` - but what date? Today's date, one's birthday? that could represent any date. We also want to describe the type of measure. So what does the date represent? If it's the project date, just change to `projectStartDate.`
+Names should reveal the intent. It should tell you why it exists, what it does, and how it is used. If a name requires a comment as to what the code does, then the name does not reveal its intent. Let's say we use `date` - but what date? It could be today's date, or perhaps one's birthday? We also want to describe the type of measure. So what does the date represent? If it's the project date, just change to `projectStartDate.`
 
 ```{r, results='asis'}
 makeBadBox('FlwRt()
 date = "2024-01-01" # date project started')
 makeGoodBox('FURate()
 startDate = "2024-01-01" # of the project')
-makeBestBox('calcFollowupRate()
+makeBetterBox('calcFollowupRate()
 projectStartDate = "2024-01-01"')
 ```
 
 ### Choose descriptive and unambiguous names
 
-Be sure names actually represent what the object does.`patientList` should really be a list, because list means something specific to programmers. Dataframes and values should have a noun or noun phrase like `totalOhioPopulation` or `currentShiftList`. Functions should have a verb or a verb phrase and be descriptive. Avoid general verbs:
+Be sure names actually represent what the object does. `patientList` should really be a list, because list means something specific to programmers. Dataframes and values should have a noun or noun phrase like `totalOhioPopulation` or `currentShiftList`. Functions should have a verb or a verb phrase and be descriptive. Avoid general verbs:
 
 | Word  | Alternatives                                      |
 |-------|---------------------------------------------------|
@@ -69,23 +68,15 @@ Be sure names actually represent what the object does.`patientList` should reall
 
 ### Make meaningful distinction
 
-Names should be used appropriately and consistently. Using `patients` and `person` interchangeably is inconsistent and confusing. Also be as descriptive as possible. Don't use `patientsA` `patientsB` rather describe the differences between the two such as `patientsWithDiabetes` and `patientsWithHypertension`. But don't also have `A1CPatients` since it follows a different naming standard as it doesn't start with \`patients.
+Names should be used appropriately and consistently. Using `patients` and `person` interchangeably is inconsistent and confusing. Also be as descriptive as possible. Don't use `patientsA` `patientsB` rather describe the differences between the two such as `patientsWithDiabetes` and `patientsWithHypertension`. But don't also have `A1CPatients` since it follows a different naming standard as it doesn't start with *patients*.
 
-xx
-There are a few names which are meaningful in and of themselves—most are not. Instead,
-you need to place names in context for your reader by enclosing them in well-named
-classes, functions, or namespaces. When all else fails, then prefixing the name may be necessary as a last resort.
+xx There are a few names which are meaningful in and of themselves—most are not. Instead, you need to place names in context for your reader by enclosing them in well-named classes, functions, or namespaces. When all else fails, then prefixing the name may be necessary as a last resort.
 
-Imagine that you have variables named `firstName`, `lastName`, `street`, `houseNumber`, `city`,
-`state`, and `zipcode.` Taken together it’s pretty clear that they form an address. But what if
-you just saw the `state` variable being used alone in a function? Would you automatically
-infer that it was part of an address?
-You can add context by using prefixes: `addrFirstName`, `addrLastName`, `addrState`, and so
-on. At least readers will understand that these variables are part of a larger structure.
+Imagine that you have variables named `firstName`, `lastName`, `street`, `houseNumber`, `city`, `state`, and `zipcode.` Taken together it’s pretty clear that they form an address. But what if you just saw the `state` variable being used alone in a function? Would you automatically infer that it was part of an address? You can add context by using prefixes: `addrFirstName`, `addrLastName`, `addrState`, and so on. At least readers will understand that these variables are part of a larger structure.
 
 ### Use pronounceable names
 
-Use words, like actual words. If I see `flwRate` I'll say flow rate in my head, but this really means Follow-up rate. This double-check hinders readable code. Use abbreviations that's common in industry. Code should be readable.
+Use words, like actual words. If I see `flwRate` I'll say flow rate in my head, but this really means Follow-up rate. I'm thinking about translating this word rather than skimming my code - this hinders readable code. Use abbreviations only when it's common in industry.
 
 ### Use searchable names.
 
@@ -100,57 +91,41 @@ for (i in 1:5) {
   e = d / 5
   s = s + e
 }')
-makeBestBox('realDaysPerIdealDay = 4
-workDaysPerWeek = 5
-sum = 0
-
-for (i in 1:workDaysPerWeek) {
-realTaskDays = i * realDaysPerIdealDay
-realTaskWeeks = realTaskDays / workDaysPerWeek
-sum = realTaskWeeks + sum
+makeBetterBox('realDaysPerIdealDay = 4
+  workDaysPerWeek = 5
+  sum = 0
+  
+  for (i in 1:workDaysPerWeek) {
+  realTaskDays = i * realDaysPerIdealDay
+  realTaskWeeks = realTaskDays / workDaysPerWeek
+  sum = realTaskWeeks + sum
 }')
 ```
 
-Note that `sum`, above, is not a particularly useful name but at least is searchable. The intentionally named code makes for a longer function, but consider how much easier it will be to find WORK_DAYS_PER_WEEK than to find all the places where 5 was used and filter the list down to just the instances with the intended meaning.
+Note that `sum`, above, is not a particularly useful name but at least it's searchable. The intentionally named code makes for a longer function, but consider how much easier it will be to find WORK_DAYS_PER_WEEK than to find all the places where 5 was used and filter the list down to just the instances with the intended meaning.
 
 If a longer loop, describe what the loop is iterating over.
 
 ```{r, results='asis'}
-makeBestBox('for (shift in shiftList){
+makeBetterBox('for (shift in shiftList){
 # CODE GOES HERE
 }')
 ```
 
 ### Pick one word per concept
-Pick one word for one abstract concept and stick with it. For instance, it’s confusing to
-have `fetch`, `retrieve`, and `get` as equivalent methods of different classes. How do you
-remember which function name goes with which class? Sadly, you often have to remember
-which company, group, or individual wrote the library or class in order to remember which
-term was used. Otherwise, you spend an awful lot of time browsing through headers and
-previous code samples
 
+Pick one word for one abstract concept and stick with it. For instance, it’s confusing to have `fetch`, `retrieve`, and `get` as equivalent methods of different classes. How do you remember which function name goes with which class? Sadly, you often have to remember which company, group, or individual wrote the library or class in order to remember which term was used. Otherwise, you spend an awful lot of time browsing through headers and previous code samples
 
 ### Replace magic numbers with named constants.
 
-Do not use numbers. While AADT is an acronym, I believe it's fitting in this
-context as it is domain knowledge to anyone who uses this code.
+Do not use numbers. While AADT is an acronym, I believe it's fitting in this context as it is domain knowledge to anyone who uses this code. Further, it adds context to the equation.
 
 ```{r, results='asis'}
-makeBadBox('EWashAADT = 12081500 / 365')
-makeBestBox('daysPerYear = 365
-             EWashAnnualCount = 12081500
-EWashAADT = EWashAnnualCount / daysPerYear"')
+makeBadBox('MainStAADT = 12081500 / 365')
+makeBetterBox('daysPerYear = 365
+             MainStAnnualCount = 12081500
+MainStAADT = MainStAnnualCount / daysPerYear"')
 ```
-
-
-## Design rules
-
-1.  Keep configurable data at high levels.
-2.  Prefer polymorphism to if/else or switch/case.
-3.  Separate multi-threading code.
-4.  Prevent over-configurability.
-5.  Use dependency injection.
-6.  Follow Law of Demeter. A class should know only its direct dependencies.
 
 ## Understandability tips
 
@@ -161,14 +136,15 @@ EWashAADT = EWashAnnualCount / daysPerYear"')
 5.  Avoid logical dependency. Don't write methods which works correctly depending on something else in the same class.
 6.  Avoid negative conditionals.
 
-
 ## Functions rules
 
 ### Small
+
 Function should be small and tell a story, meaning the name should be clear what the function does. Furthmore, input and output and the guts in between.
 
 ### Do one thing / One level of abstraction per function
-Let's look at this example and break it down. First, it reads a csv. Then it does some data cleaning, and then it recodes data. It does 3 things. So to prep data, many steps are taken. Statements within a function should have same level of abstraction per function. This can be broken down into multiple small functions.
+
+Let's look at this example and break it down. First, it reads a csv. Then it does some data cleaning and recodes data. It does 3 things. So to prep data, many steps are taken. Statements within a function should have same level of abstraction per function. This can be broken down into multiple small functions.
 
 ```{r, echo=FALSE}
 prepData <- function(csvName, migCol){
@@ -191,66 +167,103 @@ prepData <- function(csvName, migCol){
 readCSV <- function(csvName){
   read.csv(paste0(csvName,".csv"))
 }
+
+cleanDataCols <- function(csvName){
+  df |> janitor::clean_names()
+}
+
+# TODO
+recodeData <- function(df){
+  df |> mutate(
+  NewMig = case_when(
+    migCol == 1 ~ "Yes",
+    migCol == 0 ~ "NO",
+    TRUE ~ NA
+ ) )
+}
+
 ```
 
-
-"Pure Function First" Rule – Always write functions that return values, not modify data directly. The bad example mixes concerns by both computing a value and modifying a dataframe. 
+When functions are broken down like this, we want the script to read from top to bottom. Uncle Bob calls this the *The Stepdown Rule*. The first function should be the top level of abstraction. Followed by the next level of abstraction and so forth. We have `prepDataprepData()` followed by child functions used in this parent function.
 
 ### Use descriptive names
 
-### Prefer fewer arguments
+Half the battle to achieving that principle is choosing good names for small functions that do one thing. The smaller and more focused a function is, the easier it is to choose a descriptive name. Don’t be afraid to make a name long. A long descriptive name is better than a short enigmatic name. A long descriptive name is better than a long descriptive comment.
+
+pg 152 \###
 
 ### Have no side effects
 
-### Don't use flag arguments. Split method into several independent methods that can be called from the client without the flag
+If a function does one thing and intent is clear then there's no side effects. A function should do what it intends to do and also use inputs only for the function. The global state must never be modified.
 
-### Flexible / vectorized?
-For dataframes and non-dataframes.
+### Write vectorized function
 
+{purrrr}
 
+```{r}
+# Non-vectorized
+positive <- numeric(0)
+for (i in 1:length(x)) {
+  if (x[i] > 0) {
+    positive <- c(positive, x[i])
+  }
+}
 
+# Vectorized
+positive <- x[x > 0]
+```
+
+### Simple, flexible functions
+
+Take a look at these two functions.
+
+```{r}
+makeBetterBox('multiplyTwoValues <- function(df, newColName, one_value, second_value){   df |> dplyr::mutate({{newColName}} := {{one_value}} * {{second_value}}) } ')
+
+makeBetterBox('multiplyTwoValues <- function(one_value, second_value){   one_value * second_value }')
+```
+
+The first assumes the input will always be a dataframe, forcing a specific workflow. The second function allows for more simplicity, flexibility, and minimal overhead. Its concise design makes it highly reusable across a wide range of contexts, as it works with any vectorized inputs—scalars, vectors, or matrices—without requiring a data frame or the dplyr package, reducing dependencies and potential performance overhead. This function is faster for standalone operations due to its direct use of R’s native vectorized \* operator. Additionally, its generality allows it to be applied in diverse situations, such as quick calculations or non-data-frame workflows, making it more versatile for users who need a lightweight, pure function that aligns with R’s functional programming principles and delivers efficient, predictable results without the need for data frame-specific operations.
+
+❌ Hard to reuse: Cannot be used for standalone calculations. ❌ Not modular: If you need the multiplication outside dplyr, you’d have to write another function.
+
+✅ Fully reusable: multiplyTwoValues(a, b) works anywhere (in mutate(), map(), or standalone). ✅ Modular: The logic is separate from the mutate() call. ✅ More flexible: You can use it in non-dplyr contexts, such as loops, purrr functions, or even inside ggplot calculations.
 
 ## Comments rules
 
-1.  Always try to explain yourself in code.
-2.  Don't be redundant.
-3.  Don't add obvious noise.
-4.  Don't use closing brace comments.
-5.  Don't comment out code. Just remove.
-6.  Use as explanation of intent.
-7.  Use as clarification of code.
-8.  Use as warning of consequences.
+### Explain yourself through code
 
-## Source code structure
+There are times when comments are necessary or beneficial. Like to describe the decision the coder had to make or to describe a regular expression. In this example, it may not be obvious that xx
 
-1.  Separate concepts vertically.
-2.  Related code should appear vertically dense.
-3.  Declare variables close to their usage.
-4.  Dependent functions should be close.
-5.  Similar functions should be close.
-6.  Place functions in the downward direction.
-7.  Keep lines short.
-8.  Don't use horizontal alignment.
-9.  Use white space to associate related things and disassociate weakly related.
-10. Don't break indentation.
+```{r}
+makeBetterBox('multiplyTwoValues <- function(one_value, second_value){
+  one_value * second_value
+}')
+```
 
-## Objects and data structures
+Do note, that over time a comment get outdated and be simply incorrect. So comments should be used with care.
 
-1.  Hide internal structure.
-2.  Prefer data structures.
-3.  Avoid hybrids structures (half object and half data).
-4.  Should be small.
-5.  Do one thing.
-6.  Small number of instance variables.
-7.  Base class should know nothing about their derivatives.
-8.  Better to have many functions than to pass some code into a function to select a behavior.
-9.  Prefer non-static methods to static methods.
+### Comments Do Not Make Up for Bad Code
 
-## Tests
+One of the more common motivations for writing comments is bad code. We write a mod ule and we know it is confusing and disorganized. We know it’s a mess. So we say to our selves, “Ooh, I’d better comment that!” No! You’d better clean it! Clear and expressive code with few comments is far superior to cluttered and complex code with lots of comments. Rather than spend your time writing the comments that explain the mess you’ve made, spend it cleaning that mess.
+
+### Don't be redundant
+
+Code that is
+
+### Don't comment out code. Just remove.
+
+Don't leave unsed code hanging around. We use git as a reason if one ever needs old code.
+
+### Use as explanation of intent.
+
+## Unit Tests
+
+"The value of maintainable code is writting code so that when bugs happen (and they will happen) you can find them and you can fix them (and write test so they don't happen again"
+
 ### Why
-Guard against changes in dependent packages
-Gain confidence of codebase
-Test after refactoring
+
+Guard against changes in dependent packages Gain confidence of codebase Test after refactoring
 
 1.  One assert per test.
 2.  Readable.
@@ -267,22 +280,4 @@ Test after refactoring
 5.  Needless Repetition.
 6.  Opacity. The code is hard to understand.
 
-```{r}
-
-makeBadBox('multiplyTwoValues <- function(df, newColName, one_value, second_value){
-  df |> dplyr::mutate({{newColName}} := {{one_value}} * {{second_value}})
-}
-')
-makeBestBox('multiplyTwoValues <- function(one_value, second_value){
-  one_value * second_value
-}')
-```
-
-### 
-❌ Hard to reuse: Cannot be used for standalone calculations.
-❌ Not modular: If you need the multiplication outside dplyr, you’d have to write another function.
-❌ Forces a specific workflow: This only works inside a pipeline.
-
-✅ Fully reusable: multiplyTwoValues(a, b) works anywhere (in mutate(), map(), or standalone).
-✅ Modular: The logic is separate from the mutate() call.
-✅ More flexible: You can use it in non-dplyr contexts, such as loops, purrr functions, or even inside ggplot calculations.
+The question is if someone new can read the code
